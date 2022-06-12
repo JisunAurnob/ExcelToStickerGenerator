@@ -1,0 +1,6 @@
+For Laravel 9 up
+
+"phpoffice/phpspreadsheet": "^1.23"
+Composer Update
+composer require phpoffice/phpspreadsheet
+composer require maatwebsite/excel
