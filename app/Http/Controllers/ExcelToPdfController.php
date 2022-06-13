@@ -92,9 +92,9 @@ class ExcelToPdfController extends Controller
       } 
 
 
-      public function pdfdownload(Request $req){
+      public function pdfdownload(){
       
-        $info=Excelfiledata::where('Id',$req->id)->first();
+        $info=Excelfiledata::all();
       
           $pdf = PDF::loadview('pdf.pdfdownload', ['info'=> $info])
               ->setOptions(['defaultFont' => 'sans-serif'])

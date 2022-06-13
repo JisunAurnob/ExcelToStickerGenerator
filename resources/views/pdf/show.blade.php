@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-
+<a href="/pdf/pdfdownload" style="color:black" class="btn btn-outline-secondary">Download</a>
 
 <table align ="center"  class='table table-bordered'>           
 
@@ -16,7 +16,7 @@
                                   <td  ><b><u>LAYER</u></b></td>
                                   <td  ><b><u>NAME</u></b></td>
                                   <td  ><b><u>SYMBOL_USED</u></b></td>
-                                  <td  ><b><u>Options</u></b></td>
+                                 
                                 
                                </tr>
                                 
@@ -32,7 +32,7 @@
                             <td>{{$s->LAYER}} </td>
                             <td>{{$s->NAME}}</td>
                             <td>{{$s->SYMBOL_USED}} </td>
-                          <td>  <a href="/pdf/pdfdownload/{{$s->Id}}" style="color:black" class="btn btn-outline-secondary">Download</a></td>
+                          
                             
                             
                          </tr>

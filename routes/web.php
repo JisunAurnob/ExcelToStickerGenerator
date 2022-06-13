@@ -26,4 +26,4 @@ Route::get('/file/preview/{id}',[ExcelToPdfController::class,'PreviewExcel'])->n
 //PDF
 
 Route::get('/pdf/show',[ExcelToPdfController::class,'show'])->name('show');
-Route::get('/pdf/pdfdownload/{id}',[ExcelToPdfController::class,'pdfdownload'])->name('pdfdownload');
+Route::get('/pdf/pdfdownload',[ExcelToPdfController::class,'pdfdownload'])->name('pdfdownload');
