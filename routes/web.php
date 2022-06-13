@@ -21,3 +21,4 @@ Route::get('/home/upload',[ExcelToPdfController::class,'home'])->name('upload');
 Route::post('/home/upload',[ExcelToPdfController::class,'process'])->name('upload');
 Route::get('/file/delete/{id}',[ExcelToPdfController::class,'deleteExcel'])->name('deleteFile');
 Route::get('/file/preview/{id}',[ExcelToPdfController::class,'PreviewExcel'])->name('previewFile');
+Route::get('/pdf/pdfdownload/{id}',[ExcelToPdfController::class,'pdfdownload'])->name('pdfdownload');

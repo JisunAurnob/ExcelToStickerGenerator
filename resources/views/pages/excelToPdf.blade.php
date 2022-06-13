@@ -2,8 +2,8 @@
 @section('title', 'Home')
 @section('content')
     <h1></h1>
-    <div class="row offset-md-1">
-        <div class="col-md-6">
+    <div class="row offset-md-4">
+        <div class="col-md-8">
             <form action="{{ route('upload') }}" class="col-md-6" method="post" enctype='multipart/form-data'>
                 {{ csrf_field() }}<br>
                 <span class="text-danger">
@@ -30,7 +30,7 @@
             </form>
         </div>
         <div class="col-md-6">
-            <div style="height: 230px; overflow: auto; border-style: groove;">
+            <div style="height: 330px; overflow: auto; border-style: groove;">
                 {{-- <div class="spinner-border text-secondary" role="status">
                     <span class="visually-hidden">Loading...</span>
                 </div> --}}
@@ -50,11 +50,6 @@
                     @endforeach
                 </div>
             </div>
-        </div>
-        <div class="container">
-            {{-- @foreach($excelData as $edata)
-            {{$edata}}<br>
-            @endforeach --}}
         </div>
     </div>
 @endsection

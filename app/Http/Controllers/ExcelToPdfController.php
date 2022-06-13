@@ -6,7 +6,7 @@ use App\Imports\UsersImport;
 use Illuminate\Http\Request;
 use App\Models\ExcelFile;
 use App\Models\Excelfiledata;
-
+use PDF;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\File;
 // use Illuminate\Support\Facades\Input;
@@ -55,7 +55,7 @@ class ExcelToPdfController extends Controller
     public function PreviewExcel(Request $request){
         $var = ExcelFile::where('Id',$request->id)->first();
         $path = $var->Excel_Files;
-        $array = array();
+        // $array = array();
         // if(File::exists("storage".$path)){
         //     $array = Excel::toArray('storage'.$path);
         // }
@@ -66,13 +66,33 @@ class ExcelToPdfController extends Controller
         //     }
         // });
         // $array = Excel::toArray(new UsersImport, 'storage'.$path);
+
         // Excel::import(new UsersImport($request->id), 'storage'.$path);
+
         $collection  = Excel::toCollection(new UsersImport($request->id), 'storage'.$path);
         
-        $data = Excelfiledata::all();
+        // $data = Excelfiledata::all();
 
 
         // $excelFiles = ExcelFile::all();
-        return view('pages.excelPreview')->with('excelData',$collection);
+        return view('pages.excelPreview')->with('excelData',$collection)
+        ->with('id',$request->id);
     }
+
+    public function pdfdownload(Request $request){
+        $var = ExcelFile::where('Id',$request->id)->first();
+        $path = $var->Excel_Files;
+        $collection  = Excel::toCollection(new UsersImport($request->id), 'storage'.$path);
+        // $info = Excelfiledata::all();
+        // $info=Excelfiledata::where('File_Id',$req->id)->first();
+      
+          $pdf = PDF::loadview('pages.pdfView', ['excelData'=> $collection])
+              ->setOptions(['defaultFont' => 'sans-serif'])
+              ->setPaper('a4','landscape') ;
+      
+        
+      
+           return $pdf->download('ConvertedExcel.pdf');
+        
+      } 
 }
