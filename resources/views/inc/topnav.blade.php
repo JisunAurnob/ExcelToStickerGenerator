@@ -1,16 +1,16 @@
-<nav class="navbar navbar-expand-lg bg-light">
-    <div class="container-fluid">
+<nav class="navbar sticky-top navbar-dark navbar-expand-lg bg-dark">
+    <div class="container-fluid mw-100">
       <a class="navbar-brand" href="#">Excel To PDF</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarNavDropdown">
-        <ul class="navbar-nav">
+        {{-- <ul class="navbar-nav">
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="{{route('upload')}}">Home</a>
+            <a class="nav-link {{ request()->is('home/upload') ? 'active' : '' }}" href="{{ route('upload') }}">Home</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Features</a>
+            <a class="nav-link {{ request()->is('fyne/home') ? 'active' : '' }}" href="{{ route('fyne') }}">Fyne</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="#">Pricing</a>
@@ -25,7 +25,7 @@
               <li><a class="dropdown-item" href="#">Something else here</a></li>
             </ul>
           </li>
-        </ul>
+        </ul> --}}
       </div>
     </div>
   </nav>

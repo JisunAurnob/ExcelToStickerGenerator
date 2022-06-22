@@ -16,7 +16,8 @@
 
         <title>Excel To PDF - @yield('title')</title>
     </head>
-    <body class="container-fluid">
+
+    <body>
         <center><h1>Excel To PDF</h1></center>
         @include('inc.topnav')
         <div>

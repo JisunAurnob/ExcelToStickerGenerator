@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ExcelToPdfController;
+use App\Http\Controllers\BottleController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -21,4 +22,5 @@ Route::get('/home/upload',[ExcelToPdfController::class,'home'])->name('upload');
 Route::post('/home/upload',[ExcelToPdfController::class,'process'])->name('upload');
 Route::get('/file/delete/{id}',[ExcelToPdfController::class,'deleteExcel'])->name('deleteFile');
 Route::get('/file/preview/{id}',[ExcelToPdfController::class,'PreviewExcel'])->name('previewFile');
-Route::get('/pdf/pdfdownload/{id}',[ExcelToPdfController::class,'pdfdownload'])->name('pdfdownload');
+Route::get('/pdf/pdfdownload/',[ExcelToPdfController::class,'pdfdownload'])->name('pdfdownload');
+Route::get('/fyne/home/',[BottleController::class,'fyne'])->name('fyne');

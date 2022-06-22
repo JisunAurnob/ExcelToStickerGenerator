@@ -35,7 +35,7 @@ class UsersImport implements ToCollection
         {
             Excelfiledata::create([
             // 'name' => $row[0],
-            "Hoist_Label" => $row[0],
+            "Hoist_Label" => $row[8],
             "Hoist_Type" => $row[1],
             "Function" => $row[2],
             "Total_Point_Load" => $row[3],

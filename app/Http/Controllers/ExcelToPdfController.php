@@ -13,86 +13,82 @@ use Illuminate\Support\Facades\File;
 
 class ExcelToPdfController extends Controller
 {
-    public function home(){
-        $excelFiles = ExcelFile::all();
-        return view('pages.excelToPdf')->with('exFiles',$excelFiles);
+    public function home()
+    {
+        return view('pages.excelToPdf');
     }
-    public function process(Request $request){
+    public function process(Request $request)
+    {
 
-        $request->validate([
+        $request->validate(
+            [
+                'excelFile' => 'required|mimes:xlsx|max:50000'
 
-            'fileName'=>'required|min:4|max:50',
-            'excelFile' => 'required|mimes:xlsx|max:50000'
-    
-           ],
-           [
-                'fileName.min'=>'File Title should be more than 4 charecters',
-                'excelFile.required'=>'Excel File Required',
-                'excelFile.mimes'=>'The file must be a file of type: xlsx'
-           ]);
+            ],
+            [
+                'excelFile.required' => 'Excel File Required',
+                'excelFile.mimes' => 'The file must be a file of type: xlsx'
+            ]
+        );
 
-        $path = $request->file('excelFile')->store('public/excelFiles');
- 
- 
-        $var = new ExcelFile();
-        $var->Excel_Title=$request->fileName;
-        $var->Excel_Files= substr($path, 6, 3000);
-        // $var->Excel_Files= $path;
-        $var->save();
-        return redirect()->route('upload');
-    }
-    public function deleteExcel(Request $request){
-        $var = ExcelFile::where('Id',$request->id)->first();
-        if(File::exists("storage".$var->Excel_Files)){
-        // File::delete(storage_path($request->Excel_Files));
-        // File::delete($request->Excel_Files);
-        File::delete('storage'.$var->Excel_Files);
-        $var->delete();
+        $path = $request->file('excelFile');
+
+
+        $collection  = Excel::toCollection(new UsersImport($request->id), $request->file('excelFile'));
+        $pdf = PDF::setOptions([
+            // 'isHtml5ParserEnabled' => true,
+            // 'isRemoteEnabled' => true,
+            'defaultFont' => 'sans-serif'
+        ])->setPaper('a4', 'portrait')
+            ->loadView('pages.pdfView', ['excelData' => $collection]);
+
+        // return $pdf->download('ConvertedExcel.pdf');
+        if ($request->submitPreview == "Convert & Preview") {
+
+            return $pdf->stream('StickerGeneratedByExToSticker.pdf');
+
+        } elseif ($request->submitDownload == "Convert & Download") {
+
+            return $pdf->download('StickerGeneratedByExToSticker.pdf');
+            // return $pdf->stream($request->fileName . '.pdf');
         }
-
-        return redirect()->route('upload');
     }
-    public function PreviewExcel(Request $request){
-        $var = ExcelFile::where('Id',$request->id)->first();
-        $path = $var->Excel_Files;
-        // $array = array();
-        // if(File::exists("storage".$path)){
-        //     $array = Excel::toArray('storage'.$path);
-        // }
-        // Excel::load(Request::file('storage'.$path), function ($reader) {
 
-        //     foreach ($reader->toArray() as $row) {
-        //         $array = $row;
-        //     }
-        // });
-        // $array = Excel::toArray(new UsersImport, 'storage'.$path);
+    public function PreviewExcel(Request $request)
+    {
+        $var = ExcelFile::where('Id', $request->id)->first();
+        $path = $var->Excel_Files;
 
         // Excel::import(new UsersImport($request->id), 'storage'.$path);
 
-        $collection  = Excel::toCollection(new UsersImport($request->id), 'storage'.$path);
-        
+        $collection  = Excel::toCollection(new UsersImport($request->id), 'storage' . $path);
+
+
         // $data = Excelfiledata::all();
 
 
         // $excelFiles = ExcelFile::all();
-        return view('pages.excelPreview')->with('excelData',$collection)
-        ->with('id',$request->id);
+        return view('pages.excelPreview')->with('excelData', $collection)
+            ->with('id', $request->id);
     }
 
-    public function pdfdownload(Request $request){
-        $var = ExcelFile::where('Id',$request->id)->first();
-        $path = $var->Excel_Files;
-        $collection  = Excel::toCollection(new UsersImport($request->id), 'storage'.$path);
+    public function pdfdownload(Request $request)
+    {
+        // $var = ExcelFile::where('Id',$request->id)->first();
+        // $path = $var->Excel_Files;
+        $collection  = Excel::toCollection(new UsersImport($request->id), $request->file('excelFile'));
         // $info = Excelfiledata::all();
         // $info=Excelfiledata::where('File_Id',$req->id)->first();
-      
-          $pdf = PDF::loadview('pages.pdfView', ['excelData'=> $collection])
-              ->setOptions(['defaultFont' => 'sans-serif'])
-              ->setPaper('a4','landscape') ;
-      
-        
-      
-           return $pdf->download('ConvertedExcel.pdf');
-        
-      } 
+
+        $pdf = PDF::loadview('pages.pdfView', ['excelData' => $collection])
+            ->setOptions(['defaultFont' => 'sans-serif'])
+            ->setPaper('a4', 'landscape');
+
+
+        return $pdf->stream('ConvertedExcel.pdf');
+
+
+        //    return $pdf->download('ConvertedExcel.pdf');
+
+    }
 }
